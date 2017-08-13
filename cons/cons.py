@@ -17,38 +17,20 @@ def read_fasta(fname):
                 seqs[key] += line
     return seqs
 
-def print_prof(p):
-    for c in ['A', 'C', 'G', 'T']:
-        print c + ': ' + " ".join(map(str, p[c]))
+def cons(strings):
+    from collections import Counter
+    counters = map(Counter, zip(*strings))
+    consensus = "".join(c.most_common(1)[0][0] for c in counters)
+    return (counters, consensus)
 
-def add_to_prof(p, s):
-    for i, c in enumerate(s):
-        p[c][i] += 1
+def print_prof(counters):
+    print "\n".join(b + ": " + " ".join(str(c[b]) for c in counters) for b in "ACGT")
 
-def find_consensus(p):
-    cons = ""
-    for i in xrange(len(p['A'])):
-        num = 0
-        for c in ['A', 'C', 'G', 'T']:
-            if p[c][i] > num:
-                char = c
-                num = p[c][i]
-        cons += char
-    return cons
-
-# Read DNA and set up profile "matrix"
 seqs = read_fasta(sys.argv[1])
-m = len(seqs.values()[0]) # sequence length
-prof = {
-    'A': [0] * m,
-    'C': [0] * m,
-    'G': [0] * m,
-    'T': [0] * m
-}
+mat,con = cons(seqs.values())
 
-for seq in seqs.values():
-    add_to_prof(prof, seq)
+print con
+print_prof(mat)
 
-print find_consensus(prof)
-print_prof(prof)
+# print mat
 
