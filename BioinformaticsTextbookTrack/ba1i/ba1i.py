@@ -1,17 +1,16 @@
-
 import sys
 
 
-def symbol_to_number(s):
-    return { 'A': 0, 'C': 1, 'G': 2, 'T': 3 }[s]
+def symbol_to_number(sym):
+    return {'A': 0, 'C': 1, 'G': 2, 'T': 3}[sym]
 
 
-def number_to_symbol(i):
-    return { 0: 'A', 1: 'C', 2:'G', 3:'T' }[i]
+def number_to_symbol(num):
+    return {0: 'A', 1: 'C', 2:'G', 3:'T'}[num]
 
 
 def pattern_to_number(pat):
-    if len(pat) == 0:
+    if not pat:
         return 0
     symbol = pat[-1:]
     prefix = pat[:-1]
@@ -21,15 +20,15 @@ def pattern_to_number(pat):
 def number_to_pattern(index, k):
     if k == 1:
         return number_to_symbol(index)
-    prefixIndex = index / 4
-    r = index % 4
-    symbol = number_to_symbol(r)
-    prefixPattern = number_to_pattern(prefixIndex, k - 1)
-    return prefixPattern + symbol
+    prefix_index = index / 4
+    remainder = index % 4
+    symbol = number_to_symbol(remainder)
+    prefix_pattern = number_to_pattern(prefix_index, k - 1)
+    return prefix_pattern + symbol
 
 
 def hamming_distance(seq1, seq2):
-    ham = 0;
+    ham = 0
     for i in xrange(0, len(seq1)):
         if seq1[i] != seq2[i]:
             ham += 1
@@ -37,7 +36,7 @@ def hamming_distance(seq1, seq2):
 
 
 def neighbors(pattern, d):
-    if len(pattern) == 0:
+    if not pattern:
         print "-> pattern has zero length!"
         sys.exit(1)
     if d == 0:
@@ -48,8 +47,8 @@ def neighbors(pattern, d):
     suffix_neighbors = neighbors(pattern[1:], d)
     for text in suffix_neighbors:
         if hamming_distance(pattern[1:], text) < d:
-            for x in ['A', 'C', 'G', 'T']:
-                neighborhood.add(x + text)
+            for char in ['A', 'C', 'G', 'T']:
+                neighborhood.add(char + text)
         else:
             neighborhood.add(pattern[:1] + text)
     return neighborhood
@@ -86,9 +85,9 @@ def main():
         print "You must enter the name of the file to load!"
         sys.exit(1)
 
-    with open(sys.argv[1], "r") as file:
-        seq = file.readline().strip()
-        k, d = map(int, file.readline().split())
+    with open(sys.argv[1], "r") as infile:
+        seq = infile.readline().strip()
+        k, d = map(int, infile.readline().split())
 
     pats = frequent_words_with_mismatches(seq, k, d)
     print " ".join(pats)
@@ -96,4 +95,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
