@@ -1,3 +1,4 @@
+import sys
 
 
 def rev_comp(seq):
@@ -45,6 +46,12 @@ def hamming_distance(seq1, seq2):
     return ham
 
 
+def enumerate_kmers(seq, k):
+    for i in xrange(0, 1 + len(seq) - k):
+        subj = seq[i:i+k]
+        yield subj
+
+
 def neighbors(pattern, d):
     if not pattern:
         raise ValueError("pattern cannot be zero length")
@@ -61,3 +68,16 @@ def neighbors(pattern, d):
         else:
             neighborhood.add(pattern[:1] + text)
     return neighborhood
+
+
+def distance_between_pattern_and_strings(pattern, dna):
+    k = len(pattern)
+    distance = 0
+    for text in dna:
+        hamming_dist = sys.maxint
+        for patternp in enumerate_kmers(text, k):
+            hd = hamming_distance(pattern, patternp)
+            if hamming_dist > hd:
+                hamming_dist = hd
+        distance += hamming_dist
+    return distance
