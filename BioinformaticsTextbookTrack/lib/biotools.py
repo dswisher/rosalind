@@ -77,7 +77,7 @@ def distance_between_pattern_and_strings(pattern, dna):
         hamming_dist = sys.maxint
         for patternp in enumerate_kmers(text, k):
             hd = hamming_distance(pattern, patternp)
-            if hamming_dist > hd:
+            if hd < hamming_dist:
                 hamming_dist = hd
         distance += hamming_dist
     return distance
