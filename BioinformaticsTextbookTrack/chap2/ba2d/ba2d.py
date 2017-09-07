@@ -1,6 +1,6 @@
 
 import sys
-from biotools import enumerate_kmers
+from biotools import enumerate_kmers, hamming_distance
 
 
 def read_data(fname):
@@ -25,6 +25,10 @@ def build_kmers(dna, k):
 
 def nuc_to_index(nuc):
     return {'A': 0, 'C': 1, 'G': 2, 'T': 3}[nuc]
+
+
+def index_to_nuc(idx):
+    return {0: 'A', 1: 'C', 2: 'G', 3: 'T'}[idx]
 
 
 def build_profile(seqs, k):
@@ -57,30 +61,72 @@ def find_most_probable(profile, dna, k):
     return best_kmer
 
 
+def find_consensus(profile, k):
+    con = ""
+    for i in xrange(k):
+        m = 0
+        c = 'A'
+        for j in xrange(4):
+            if profile[j][i] > m:
+                m = profile[j][i]
+                c = index_to_nuc(j)
+        con += c
+    return con
+
+
+def compute_score(consensus, motifs):
+    score = 0
+    for seq in motifs:
+        score += hamming_distance(consensus, seq)
+    return score
+
+
 def greedy_motif_search(dna, k, t):
     all_kmers = build_kmers(dna, k)
     best_motifs = [item[0] for item in all_kmers]
+    best_score = sys.maxint
     for kmer in all_kmers[0]:
         motifs = [kmer]
         for i in xrange(2, t):
             profile = build_profile(motifs, k)
             motif_i = find_most_probable(profile, dna[i], k)
             motifs.append(motif_i)
-        # TODO - score and replace best if lower
-        # print motifs
-
+        consensus = find_consensus(build_profile(motifs, k), k)
+        score = compute_score(consensus, motifs)
+        if score < best_score:
+            best_score = score
+            best_motifs = motifs
     return best_motifs
 
 
-def main():
-    k, t, dna = read_data(sys.argv[1])
+def print_profile(profile, k):
+    for j in xrange(4):
+        line = index_to_nuc(j) + ": "
+        for i in xrange(k):
+            # line += " " + str(round(profile[j][i], 2))
+            line += '{:<04}'.format(profile[j][i]) + "  "
+        print line
+
+
+def test1():
+    k = 12
+    profile = build_profile(["TCGGGGGTTTTT", "CCGGTGACTTAC", "ACGGGGATTTTC",
+                             "TTGGGGACTTTT", "AAGGGGACTTCC", "TTGGGGACTTCC",
+                             "TCGGGGATTCAT", "TCGGGGATTCCT", "TAGGGGAACTAC",
+                             "TCGGGTATAACC"], k)
+    print_profile(profile, k)
+    print find_consensus(profile, k)
+
+
+def main(fname):
+    k, t, dna = read_data(fname)
     print greedy_motif_search(dna, k, t)
 
-    # print build_profile(["TCGGGGGTTTTT", "CCGGTGACTTAC", "ACGGGGATTTTC",
-    #                      "TTGGGGACTTTT", "AAGGGGACTTCC", "TTGGGGACTTCC",
-    #                      "TCGGGGATTCAT", "TCGGGGATTCCT", "TAGGGGAACTAC",
-    #                      "TCGGGTATAACC"], 12)
+    # test1()
 
 
 if __name__ == '__main__':
-    main()
+    if len(sys.argv) != 2:
+        print "Usage: python ba2d.py <filename>"
+        sys.exit(1)
+    main(sys.argv[1])
