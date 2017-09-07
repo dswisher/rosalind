@@ -87,7 +87,7 @@ def greedy_motif_search(dna, k, t):
     best_score = sys.maxint
     for kmer in all_kmers[0]:
         motifs = [kmer]
-        for i in xrange(2, t):
+        for i in xrange(1, t):
             profile = build_profile(motifs, k)
             motif_i = find_most_probable(profile, dna[i], k)
             motifs.append(motif_i)
@@ -120,7 +120,9 @@ def test1():
 
 def main(fname):
     k, t, dna = read_data(fname)
-    print greedy_motif_search(dna, k, t)
+    motifs = greedy_motif_search(dna, k, t)
+    for m in motifs:
+        print m
 
     # test1()
 
