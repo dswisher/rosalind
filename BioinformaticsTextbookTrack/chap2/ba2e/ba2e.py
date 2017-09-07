@@ -1,6 +1,6 @@
 
 import sys
-from biotools import enumerate_kmers, compute_score
+from biotools import enumerate_kmers, compute_score, print_profile
 from biotools import build_profile, find_most_probable, find_consensus
 
 
@@ -31,10 +31,11 @@ def greedy_motif_search(dna, k, t):
     for kmer in all_kmers[0]:
         motifs = [kmer]
         for i in xrange(1, t):
-            profile = build_profile(motifs, k)
+            seed = 1.0 / len(motifs)
+            profile = build_profile(motifs, k, seed)
             motif_i = find_most_probable(profile, dna[i], k)
             motifs.append(motif_i)
-        consensus = find_consensus(build_profile(motifs, k), k)
+        consensus = find_consensus(build_profile(motifs, k, seed), k)
         score = compute_score(consensus, motifs)
         if score < best_score:
             best_score = score
@@ -42,11 +43,23 @@ def greedy_motif_search(dna, k, t):
     return best_motifs
 
 
+def test1():
+    k = 12
+    profile = build_profile(["TCGGGGGTTTTT", "CCGGTGACTTAC", "ACGGGGATTTTC",
+                             "TTGGGGACTTTT", "AAGGGGACTTCC", "TTGGGGACTTCC",
+                             "TCGGGGATTCAT", "TCGGGGATTCCT", "TAGGGGAACTAC",
+                             "TCGGGTATAACC"], k)
+    print_profile(profile, k)
+    print find_consensus(profile, k)
+
+
 def main(fname):
     k, t, dna = read_data(fname)
     motifs = greedy_motif_search(dna, k, t)
     for m in motifs:
         print m
+
+    # test1()
 
 
 if __name__ == '__main__':
