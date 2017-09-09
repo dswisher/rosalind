@@ -1,7 +1,7 @@
 
 import sys
-from biotools import enumerate_kmers, compute_score
-from biotools import build_profile, find_most_probable, find_consensus
+import os
+from ....common import kmers
 
 
 def read_data(fname):
@@ -15,13 +15,13 @@ def read_data(fname):
 
 # Build a list of lists of k-mers (one per string in dna)
 def build_kmers(dna, k):
-    kmers = []
+    klist = []
     for s in dna:
         l = []
-        kmers.append(l)
-        for mer in enumerate_kmers(s, k):
+        klist.append(l)
+        for mer in kmers.enumerate(s, k):
             l.append(mer)
-    return kmers
+    return klist
 
 
 def greedy_motif_search(dna, k, t):
@@ -31,11 +31,11 @@ def greedy_motif_search(dna, k, t):
     for kmer in all_kmers[0]:
         motifs = [kmer]
         for i in xrange(1, t):
-            profile = build_profile(motifs, k)
-            motif_i = find_most_probable(profile, dna[i], k)
+            profile = kmers.build_profile(motifs, k)
+            motif_i = kmers.find_most_probable(profile, dna[i], k)
             motifs.append(motif_i)
-        consensus = find_consensus(build_profile(motifs, k), k)
-        score = compute_score(consensus, motifs)
+        consensus = kmers.find_consensus(kmers.build_profile(motifs, k), k)
+        score = kmers.compute_score(consensus, motifs)
         if score < best_score:
             best_score = score
             best_motifs = motifs
@@ -43,7 +43,8 @@ def greedy_motif_search(dna, k, t):
 
 
 def main(fname):
-    k, t, dna = read_data(fname)
+    path = os.path.join(os.path.dirname(__file__), fname)
+    k, t, dna = read_data(path)
     motifs = greedy_motif_search(dna, k, t)
     for m in motifs:
         print m
