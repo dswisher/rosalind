@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # Parse the command line
 MODE="run"

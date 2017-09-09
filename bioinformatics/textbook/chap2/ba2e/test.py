@@ -3,7 +3,7 @@ import unittest
 from . import main
 
 
-class TestGreedyMotifSearch(unittest.TestCase):
+class TestGreedyMotifSearchWithPseudoCounts(unittest.TestCase):
 
     def test_sample(self):
         k = 3
@@ -13,7 +13,7 @@ class TestGreedyMotifSearch(unittest.TestCase):
                "CAAGGAGTTCGC",
                "CACGTCAATCAC",
                "CAATAATATTCG"]
-        expected = ["CAG", "CAG", "CAA", "CAA", "CAA"]
+        expected = ["TTC", "ATC", "TTC", "ATC", "TTC"]
         motifs = main.greedy_motif_search(dna, k, t)
         self.assertItemsEqual(motifs, expected)
 
