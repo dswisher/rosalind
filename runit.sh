@@ -35,5 +35,5 @@ fi
 # Run it
 # echo "Executing python module: $MODULE"
 # NOTES: -B prevents creation of .pyc files
-python -B -m $MODULE $*
+python -m $MODULE $*
 
