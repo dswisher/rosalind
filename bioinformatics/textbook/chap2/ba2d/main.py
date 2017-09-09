@@ -52,6 +52,6 @@ def main(fname):
 
 if __name__ == '__main__':
     if len(sys.argv) != 2:
-        print "Usage: python ba2d.py <filename>"
+        print "You must specify the name of the data file to load!"
         sys.exit(1)
     main(sys.argv[1])
