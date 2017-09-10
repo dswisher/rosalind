@@ -1,7 +1,7 @@
 
 import sys
-import os
-from ....common import kmers
+from rosalind.common import util
+from rosalind.bioinformatics.common import kmers
 
 
 def read_data(fname):
@@ -43,8 +43,8 @@ def greedy_motif_search(dna, k, t):
 
 
 def main(fname):
-    path = os.path.join(os.path.dirname(__file__), fname)
-    k, t, dna = read_data(path)
+    # path = os.path.join(os.path.dirname(__file__), fname)
+    k, t, dna = read_data(util.find_file(fname))
     motifs = greedy_motif_search(dna, k, t)
     for m in motifs:
         print m

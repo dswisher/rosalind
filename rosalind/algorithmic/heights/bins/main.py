@@ -1,11 +1,12 @@
 
 import sys
+from rosalind.common import util
 
 if len(sys.argv) != 2:
     print "usage: python bins.py <filename>"
     sys.exit(1)
 
-with open(sys.argv[1], "r") as fp:
+with open(util.find_file(sys.argv[1]), "r") as fp:
     fp.readline()
     fp.readline()
     A = map(int, fp.readline().split())

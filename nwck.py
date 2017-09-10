@@ -1,4 +1,4 @@
-from bioinformatics.stronghold.nwck import nwck
+from rosalind.bioinformatics.stronghold.nwck import main
 
 if __name__ == "__main__":
-    nwck.main()
+    main.main()

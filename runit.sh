@@ -16,14 +16,14 @@ if [ -z "$NAME" ]; then
 fi
 
 # Look for the problem
-PDIR=`find . -name $NAME -print`
+PDIR=`find rosalind -name $NAME -type d -print`
 
 if [ -z "$PDIR" ]; then
   echo "Could not locate problem $NAME."
   exit 0
 fi
 
-PNAME=`echo $PDIR | tr '/' '.' | sed 's/^..//'`
+PNAME=`echo $PDIR | tr '/' '.'`
 
 # Figure out the name of the module
 if [ $MODE == "test" ]; then

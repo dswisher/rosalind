@@ -1,7 +1,7 @@
 
 import sys
-import os
-from ....common import kmers
+from rosalind.common import util
+from rosalind.bioinformatics.common import kmers
 
 
 def read_data(fname):
@@ -24,7 +24,7 @@ def build_kmers(dna, k):
     return klist
 
 
-def randomized_motif_search(dna, k, t):
+def greedy_motif_search(dna, k, t):
     all_kmers = build_kmers(dna, k)
     best_motifs = [item[0] for item in all_kmers]
     best_score = sys.maxint
@@ -45,13 +45,10 @@ def randomized_motif_search(dna, k, t):
 
 
 def main(fname):
-    path = os.path.join(os.path.dirname(__file__), fname)
-    k, t, dna = read_data(path)
-    motifs = randomized_motif_search(dna, k, t)
+    k, t, dna = read_data(util.find_file(fname))
+    motifs = greedy_motif_search(dna, k, t)
     for m in motifs:
         print m
-
-    # test1()
 
 
 if __name__ == '__main__':

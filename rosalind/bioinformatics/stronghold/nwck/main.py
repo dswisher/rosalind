@@ -1,5 +1,5 @@
 
-from ...common import newick
+from rosalind.bioinformatics.common import newick
 
 
 def main():
