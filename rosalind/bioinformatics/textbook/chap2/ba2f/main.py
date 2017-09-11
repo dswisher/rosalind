@@ -1,5 +1,6 @@
 
 import sys
+import random
 from rosalind.common import util
 from rosalind.bioinformatics.common import kmers
 
@@ -24,23 +25,46 @@ def build_kmers(dna, k):
     return klist
 
 
-def randomized_motif_search(dna, k, t):
+def do_one_search(dna, k, t):
     all_kmers = build_kmers(dna, k)
-    best_motifs = [item[0] for item in all_kmers]
+    # best_motifs = [item[0] for item in all_kmers]
+    motifs = [item[random.randint(0, len(item) - 1)] for item in all_kmers]
+    best_motifs = motifs
     best_score = sys.maxint
-    for kmer in all_kmers[0]:
-        motifs = [kmer]
+    seed = 1.0 / len(motifs)
+
+    while True:
+        # Construct a profile from the motifs we have so far
+        profile = kmers.build_profile(motifs, k, seed)
+
+        # Find the profile-most-probable k-mers from each DNA string
+        motifs = []
         for i in xrange(1, t):
-            seed = 1.0 / len(motifs)
-            profile = kmers.build_profile(motifs, k, seed)
-            motif_i = kmers.find_most_probable(profile, dna[i], k)
-            motifs.append(motif_i)
+            motifs.append(kmers.find_most_probable(profile, dna[i], k))
+
+        # Compute the score of this new set of motifs
         profile = kmers.build_profile(motifs, k, seed)
         consensus = kmers.find_consensus(profile, k)
         score = kmers.compute_score(consensus, motifs)
+
         if score < best_score:
             best_score = score
             best_motifs = motifs
+        else:
+            return (best_score, best_motifs)
+
+
+def randomized_motif_search(dna, k, t):
+    best_score = sys.maxint
+    best_motifs = None
+    for i in xrange(0, 1000):
+        print "Iter", i
+        score, motifs = do_one_search(dna, k, t)
+        if score < best_score:
+            print " -> improved score:", score, "<", best_score
+            best_score = score
+            best_motifs = motifs
+    print "Final best_score:", best_score
     return best_motifs
 
 
