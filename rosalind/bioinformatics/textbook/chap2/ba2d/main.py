@@ -43,7 +43,6 @@ def greedy_motif_search(dna, k, t):
 
 
 def main(fname):
-    # path = os.path.join(os.path.dirname(__file__), fname)
     k, t, dna = read_data(util.find_file(fname))
     motifs = greedy_motif_search(dna, k, t)
     for m in motifs:

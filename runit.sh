@@ -27,7 +27,7 @@ PNAME=`echo $PDIR | tr '/' '.'`
 
 # Figure out the name of the module
 if [ $MODE == "test" ]; then
-  MODULE="$PNAME.test"
+  MODULE="$PNAME.test_main"
 else
   MODULE="$PNAME.main"
 fi
