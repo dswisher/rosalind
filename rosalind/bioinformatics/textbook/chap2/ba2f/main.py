@@ -39,7 +39,7 @@ def do_one_search(dna, k, t):
 
         # Find the profile-most-probable k-mers from each DNA string
         motifs = []
-        for i in xrange(1, t):
+        for i in xrange(0, t):
             motifs.append(kmers.find_most_probable(profile, dna[i], k))
 
         # Compute the score of this new set of motifs
@@ -58,7 +58,8 @@ def randomized_motif_search(dna, k, t):
     best_score = sys.maxint
     best_motifs = None
     for i in xrange(0, 1000):
-        print "Iter", i
+        if i % 10 == 0:
+            print "Iter", i
         score, motifs = do_one_search(dna, k, t)
         if score < best_score:
             print " -> improved score:", score, "<", best_score
