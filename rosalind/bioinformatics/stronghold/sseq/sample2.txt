@@ -1,0 +1,4 @@
+> DNA
+TATGCTAAGATC
+> Motif
+ACG

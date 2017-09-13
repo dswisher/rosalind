@@ -3,12 +3,17 @@ def read(path):
     seqs = []
     names = []
     with open(path, "r") as fp:
+        frag = ""
         for line in fp:
             line = line.strip()
-            # TODO - handle continuations!
             if line[:1] == '>':
+                if len(frag) > 0:
+                    seqs.append(frag)
+                    frag = ""
                 names.append(line[1:].strip())
             else:
-                seqs.append(line)
+                frag += line
+        if len(frag) > 0:
+            seqs.append(frag)
 
     return (seqs, names)
