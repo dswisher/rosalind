@@ -24,6 +24,10 @@ class TestSignedPermutations(unittest.TestCase):
         self.check_num(len(perms), 3)
         self.assertItemsEqual(perms, expected)
 
+    def test_4(self):
+        perms = main.enumerate_signed_permutations(4)
+        self.check_num(len(perms), 4)
+
     def permutations(self, n, k):
         return math.factorial(n) / math.factorial(n - k)
 
