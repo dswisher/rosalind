@@ -3,15 +3,23 @@ import sys
 import os
 
 
-def find_file(fname):
+def find_file(fname, extra_root=None):
     # Does it exist in the current directory?
     if os.path.isfile(fname):
         return fname
 
+    # If extra root is specified, look in its directory
+    if extra_root is not None:
+        work_dir = os.path.dirname(extra_root)
+        path = os.path.join(work_dir, fname)
+
+        if os.path.isfile(path):
+            return path
+
     # Grab the directory containing the "main" module
-    main_path = (os.path.abspath(sys.modules['__main__'].__file__))
-    main_dir = os.path.dirname(main_path)
-    path = os.path.join(main_dir, fname)
+    work_path = (os.path.abspath(sys.modules['__main__'].__file__))
+    work_dir = os.path.dirname(work_path)
+    path = os.path.join(work_dir, fname)
 
     if os.path.isfile(path):
         return path
