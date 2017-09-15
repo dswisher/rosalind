@@ -1,4 +1,7 @@
 
+import itertools
+
+
 def hamming_distance(seq1, seq2):
     if len(seq1) != len(seq2):
         raise ValueError("patterns must be the same length")
@@ -80,3 +83,8 @@ def compute_score(consensus, motifs):
     for seq in motifs:
         score += hamming_distance(consensus, seq)
     return score
+
+
+def list(k, alphabet="ACGT"):
+    for tup in itertools.product(alphabet, repeat=k):
+        yield ''.join(tup)

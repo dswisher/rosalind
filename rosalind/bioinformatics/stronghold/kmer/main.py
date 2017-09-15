@@ -6,13 +6,19 @@ from rosalind.bioinformatics.common import kmers
 
 
 def count_kmers(seq, k):
-    # Build a list of all the kmers
-    print seq
-    for k in kmers.list(k):
-        # Count the number of times k appears in seq
-        print k
-    # TODO - HACK
-    return [4, 1, 4, 3]
+    # TODO - use yield?
+    result = []
+    for kmer in kmers.list(k):
+        index = 0
+        num = 0
+        while index < len(seq):
+            index = seq.find(kmer, index)
+            if index == -1:
+                break
+            num += 1
+            index += 1  # want overlaps
+        result.append(num)
+    return result
 
 
 def main(fname):
