@@ -2,7 +2,7 @@
 from __future__ import print_function
 import sys
 import time
-from rosalind.common import util
+from rosalind.bioinformatics.common import seqio
 
 
 def eprint(*args, **kwargs):
@@ -21,10 +21,7 @@ def build_overlap_graph(seqs):
 
 def main(fname):
     start = time.time()
-    seqs = []
-    with open(util.find_file(sys.argv[1]), "r") as fp:
-        for line in fp:
-            seqs.append(line.strip())
+    seqs = seqio.read_list(sys.argv[1])
     result = build_overlap_graph(seqs)
     for p in result:
         print (p[0], "->", p[1])

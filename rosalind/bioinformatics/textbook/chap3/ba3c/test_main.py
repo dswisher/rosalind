@@ -1,6 +1,7 @@
 
 import unittest
 from rosalind.common import util
+from rosalind.bioinformatics.common import seqio
 from . import main
 
 
@@ -17,10 +18,7 @@ class TestReconstructString(unittest.TestCase):
         self.run_test("sample3.txt", "expected3.txt")
 
     def run_test(self, sample_name, expected_name):
-        seqs = []
-        with open(util.find_file(sample_name, __file__), "r") as fp:
-            for line in fp:
-                seqs.append(line.strip())
+        seqs = seqio.read_list(sample_name, __file__)
 
         expected = []
         with open(util.find_file(expected_name, __file__), "r") as fp:

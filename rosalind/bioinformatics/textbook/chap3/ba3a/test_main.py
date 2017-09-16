@@ -1,6 +1,7 @@
 
 import unittest
 from rosalind.common import util
+from rosalind.bioinformatics.common import seqio
 from . import main
 
 
@@ -16,10 +17,7 @@ class TestGenerateKmers(unittest.TestCase):
         with open(util.find_file(seq_name, __file__), "r") as fp:
             fp.readline()   # skip count
             seq = fp.readline().strip()
-        expected = []
-        with open(util.find_file(expected_name, __file__), "r") as fp:
-            for line in fp:
-                expected.append(line.strip())
+        expected = seqio.read_list(expected_name, __file__)
         actual = main.generate_kmers(seq, k)
         self.assertItemsEqual(actual, expected)
 
