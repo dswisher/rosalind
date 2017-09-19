@@ -18,13 +18,11 @@ def build_graph(seq, k):
 def format_graph(graph):
     for n in graph.values():
         l = n.label
-        r = ""
+        r = []
         for e in n.out_edges:
-            if len(r) > 0:
-                r += ","
-            r += e.tail.label
+            r.append(e.tail.label)
         if len(r) > 0:
-            yield l + " -> " + r
+            yield l + " -> " + ",".join(sorted(r))
 
 
 def main(fname):
