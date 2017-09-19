@@ -1,9 +1,18 @@
 
 import sys
 from rosalind.common import util
+from rosalind.bioinformatics.common import debruijn
+from rosalind.bioinformatics.common import kmers
 
 
 def build_graph(seq, k):
+    # TODO - can we wire the "yield" result from kmers.enum right
+    #        into debruijn.create_graph?
+    seqs = []
+    for s in kmers.enumerate(seq, k):
+        seqs.append(s)
+    graph = debruijn.create_graph(seqs)
+    print graph
     # TODO - build the graph
     return []
 
