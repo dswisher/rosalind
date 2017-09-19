@@ -12,9 +12,19 @@ def build_graph(seq, k):
     for s in kmers.enumerate(seq, k):
         seqs.append(s)
     graph = debruijn.create_graph(seqs)
-    print graph
-    # TODO - build the graph
-    return []
+    return graph
+
+
+def format_graph(graph):
+    for n in graph.values():
+        l = n.label
+        r = ""
+        for e in n.out_edges:
+            if len(r) > 0:
+                r += ","
+            r += e.tail.label
+        if len(r) > 0:
+            yield l + " -> " + r
 
 
 def main(fname):
@@ -24,7 +34,8 @@ def main(fname):
 
     graph = build_graph(seq, k)
 
-    print "TBD:", graph
+    for line in format_graph(graph):
+        print line
 
 
 if __name__ == '__main__':

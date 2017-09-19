@@ -13,10 +13,16 @@ class TestGenerateKmers(unittest.TestCase):
         with open(util.find_file(seq_name, __file__), "r") as fp:
             k = int(fp.readline())
             seq = fp.readline().strip()
-        expected = "TBD"
-        actual = main.build_graph(k, seq)
-        print "TBD:", actual, expected
-        # self.assertItemsEqual(actual, expected)
+        expected = ["AAG -> AGA",
+                    "TCT -> CTC,CTA",
+                    "GAT -> ATT",
+                    "AGA -> GAT",
+                    "ATT -> TTC",
+                    "CTA -> TAC",
+                    "CTC -> TCT",
+                    "TTC -> TCT"]
+        actual = list(main.format_graph(main.build_graph(seq, k)))
+        self.assertItemsEqual(actual, expected)
 
 
 if __name__ == '__main__':

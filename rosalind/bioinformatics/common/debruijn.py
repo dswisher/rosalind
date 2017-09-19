@@ -18,8 +18,10 @@ class Node:
 
 class Edge:
     """ Edge in the graph """
-    def __init__(self, lab):
+    def __init__(self, lab, head, tail):
         self.label = lab
+        self.head = head
+        self.tail = tail
 
     def __repr__(self):
         return self.label
@@ -46,7 +48,7 @@ def create_graph(seqs):
             n2 = Node(suffix)
             nodes[suffix] = n2
 
-        edge = Edge(s)
+        edge = Edge(s, n1, n2)
 
         n1.add_out(edge)
         n2.add_in(edge)
