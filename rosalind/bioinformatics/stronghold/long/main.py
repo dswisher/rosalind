@@ -9,8 +9,6 @@ def max_overlap(s1, s2):
     for k in xrange(1, min(len(s1), len(s2))):
         if s1[-k:] == s2[:k]:
             mlap = k
-        else:
-            return mlap
     return mlap
 
 
@@ -28,11 +26,13 @@ def find_max_overlap(seqs, pos):
 
 def find_shortest_superstring(seqs):
     pos = 0
-    while len(seqs) > 1:
+    bail = 0    # Temporary infinite loop prevention
+    while len(seqs) > 1 and bail < 20:
         olap = find_max_overlap(seqs, pos)
         print pos, olap
-        break
+        bail += 1
     # TODO
+    # return "ATTAGACCTGCCGGAATAC"
     return "FRED"
 
 
