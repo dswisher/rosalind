@@ -54,3 +54,18 @@ def create_graph(seqs):
         n2.add_in(edge)
 
     return nodes
+
+
+def format_graph(graph):
+    for n in graph.values():
+        l = n.label
+        r = []
+        for e in n.out_edges:
+            r.append(e.tail.label)
+        if len(r) > 0:
+            yield l + " -> " + ",".join(sorted(r))
+
+
+def read_adjacency_list(fp):
+    # TODO
+    return create_graph(["ACTG", "CTGA", "TGAC"])
