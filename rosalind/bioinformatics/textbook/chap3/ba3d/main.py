@@ -1,8 +1,7 @@
 
 import sys
 from rosalind.common import util
-from rosalind.bioinformatics.common import debruijn
-from rosalind.bioinformatics.common import kmers
+from rosalind.bioinformatics.common import debruijn, kmers
 
 
 def build_graph(seq, k):
@@ -15,16 +14,6 @@ def build_graph(seq, k):
     return graph
 
 
-def format_graph(graph):
-    for n in graph.values():
-        l = n.label
-        r = []
-        for e in n.out_edges:
-            r.append(e.tail.label)
-        if len(r) > 0:
-            yield l + " -> " + ",".join(sorted(r))
-
-
 def main(fname):
     with open(util.find_file(sys.argv[1]), "r") as fp:
         k = int(fp.readline())
@@ -32,7 +21,7 @@ def main(fname):
 
     graph = build_graph(seq, k)
 
-    for line in format_graph(graph):
+    for line in debruijn.format_graph(graph):
         print line
 
 

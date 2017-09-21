@@ -22,9 +22,20 @@ class Edge:
         self.label = lab
         self.head = head
         self.tail = tail
+        head.add_out(self)
+        tail.add_in(self)
 
     def __repr__(self):
         return self.label
+
+
+def _find_or_add_node(col, name):
+    if name in col.keys():
+        node = col[name]
+    else:
+        node = Node(name)
+        col[name] = node
+    return node
 
 
 def create_graph(seqs):
@@ -36,23 +47,10 @@ def create_graph(seqs):
         prefix = s[:k]
         suffix = s[-k:]
 
-        if prefix in nodes.keys():
-            n1 = nodes[prefix]
-        else:
-            n1 = Node(prefix)
-            nodes[prefix] = n1
+        n1 = _find_or_add_node(nodes, prefix)
+        n2 = _find_or_add_node(nodes, suffix)
 
-        if suffix in nodes.keys():
-            n2 = nodes[suffix]
-        else:
-            n2 = Node(suffix)
-            nodes[suffix] = n2
-
-        edge = Edge(s, n1, n2)
-
-        n1.add_out(edge)
-        n2.add_in(edge)
-
+        Edge(s, n1, n2)
     return nodes
 
 
@@ -67,5 +65,15 @@ def format_graph(graph):
 
 
 def read_adjacency_list(fp):
-    # TODO
-    return create_graph(["ACTG", "CTGA", "TGAC"])
+    nodes = {}
+    for line in fp:
+        line = line.strip()
+        bits = line.split()
+        if len(bits) != 3:
+            raise ValueError("Line '" + line + "' is not well formed.")
+        head = _find_or_add_node(nodes, bits[0])
+        for t in bits[2].split(','):
+            tail = _find_or_add_node(nodes, t)
+            label = head.label + " -> " + tail.label
+            Edge(label, head, tail)
+    return nodes
