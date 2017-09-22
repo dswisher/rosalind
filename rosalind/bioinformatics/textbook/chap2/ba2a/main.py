@@ -1,6 +1,7 @@
 
 import sys
-from biotools import neighbors, hamming_distance
+from rosalind.common import util
+from rosalind.bioinformatics.common import kmers
 
 
 def read_data():
@@ -10,7 +11,7 @@ def read_data():
 
     seqs = []
     lineno = 0
-    with open(sys.argv[1]) as fp:
+    with open(util.find_file(sys.argv[1])) as fp:
         for line in fp:
             lineno += 1
             if lineno == 1:
@@ -36,7 +37,7 @@ def fuzzy_contains_kmer(seq, kmer, d):
     k = len(kmer)
     for i in xrange(0, 1 + len(seq) - k):
         subj = seq[i:i+k]
-        if hamming_distance(kmer, subj) <= d:
+        if kmers.hamming_distance(kmer, subj) <= d:
             return True
     return False
 
@@ -44,7 +45,7 @@ def fuzzy_contains_kmer(seq, kmer, d):
 def motif_enumeration(dna, k, d):
     patterns = set()
     for pattern in list_kmers(dna, k):
-        neighborhood = neighbors(pattern, d)
+        neighborhood = kmers.neighbors(pattern, d)
         for pattern_prime in neighborhood:
             if all(fuzzy_contains_kmer(seq, pattern_prime, d) for seq in dna):
                 patterns.add(pattern_prime)

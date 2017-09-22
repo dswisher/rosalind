@@ -12,6 +12,24 @@ def hamming_distance(seq1, seq2):
     return ham
 
 
+def neighbors(pattern, d):
+    if not pattern:
+        raise ValueError("pattern cannot be zero length")
+    if d == 0:
+        return [pattern]
+    if len(pattern) == 1:
+        return ['A', 'C', 'G', 'T']
+    neighborhood = set()
+    suffix_neighbors = neighbors(pattern[1:], d)
+    for text in suffix_neighbors:
+        if hamming_distance(pattern[1:], text) < d:
+            for char in ['A', 'C', 'G', 'T']:
+                neighborhood.add(char + text)
+        else:
+            neighborhood.add(pattern[:1] + text)
+    return neighborhood
+
+
 def enumerate(seq, k):
     for i in xrange(0, 1 + len(seq) - k):
         subj = seq[i:i+k]
