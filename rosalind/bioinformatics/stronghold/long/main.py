@@ -21,19 +21,21 @@ def find_max_overlap(seqs, pos):
             if olap > max_olap:
                 max_olap = olap
                 max_i = i
-    return max_i
+    return max_i, max_olap
 
 
 def find_shortest_superstring(seqs):
-    pos = 0
-    bail = 0    # Temporary infinite loop prevention
-    while len(seqs) > 1 and bail < 20:
-        olap = find_max_overlap(seqs, pos)
-        print pos, olap
-        bail += 1
-    # TODO
-    # return "ATTAGACCTGCCGGAATAC"
-    return "FRED"
+    half = len(seqs[0]) / 2
+    while len(seqs) > 1:
+        pos = 0
+        while pos < len(seqs):
+            oidx, olap = find_max_overlap(seqs, pos)
+            if oidx != -1 and olap > half:
+                seqs[pos] += seqs[oidx][olap:]
+                seqs.pop(oidx)
+            else:
+                pos += 1
+    return seqs[0]
 
 
 def main(fname):
