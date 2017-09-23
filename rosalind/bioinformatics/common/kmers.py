@@ -106,3 +106,12 @@ def compute_score(consensus, motifs):
 def list(k, alphabet="ACGT"):
     for tup in itertools.product(alphabet, repeat=k):
         yield ''.join(tup)
+
+
+def reverse_complement(seq):
+    comp = {'A': 'T', 'C': 'G', 'G': 'C', 'T': 'A'}
+    sc = ''
+    for c in reversed(seq):
+        if c in comp:
+            sc += comp[c]
+    return sc

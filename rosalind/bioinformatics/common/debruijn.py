@@ -64,6 +64,12 @@ def format_graph(graph):
             yield l + " -> " + ",".join(sorted(r))
 
 
+def format_adjacency(graph):
+    for n in graph.values():
+        for e in n.out_edges:
+            yield "(" + e.head.label + ", " + e.tail.label + ")"
+
+
 def read_adjacency_list(fp):
     nodes = {}
     for line in fp:
