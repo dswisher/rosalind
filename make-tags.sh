@@ -1,3 +1,3 @@
 
-ctags --python-kinds=-iv -R rosalind
+ctags -R rosalind
 
