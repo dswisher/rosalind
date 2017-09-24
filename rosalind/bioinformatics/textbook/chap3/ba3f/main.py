@@ -11,7 +11,7 @@ def find_unvisited_edge(node):
     return None
 
 
-def find_eulerian_path(graph):
+def find_eulerian_cycle(graph):
     temp_path = []
     final_path = []
 
@@ -48,7 +48,7 @@ def main(fname):
     with open(util.find_file(sys.argv[1]), "r") as fp:
         graph = debruijn.read_adjacency_list(fp)
 
-    path = find_eulerian_path(graph)
+    path = find_eulerian_cycle(graph)
     print format_path(path)
 
 
