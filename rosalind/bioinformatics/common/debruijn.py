@@ -24,6 +24,7 @@ class Edge:
         self.tail = tail
         head.add_out(self)
         tail.add_in(self)
+        self.visited = False
 
     def __repr__(self):
         return self.label
