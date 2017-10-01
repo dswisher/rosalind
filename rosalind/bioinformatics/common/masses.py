@@ -12,12 +12,12 @@ def get_mass(aa):
     return _weights[aa]
 
 
-def get_amino_acid(weight):
+def get_amino_acid(weight, toler=0.001):
     diff = 1e6
     best = None
     for aa, w in _weights.iteritems():
         d = abs(weight - w)
-        if d < diff:
+        if d < diff and d < toler:
             diff = d
             best = aa
     return best

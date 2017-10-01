@@ -1,13 +1,33 @@
 
 import sys
 from rosalind.common import util
-# from rosalind.bioinformatics.common import masses
+from rosalind.bioinformatics.common import masses
 
 
 def infer_peptide(parent, weights):
-    # masses.get_amino_acid(186)
-    # TODO
-    return "KEKEP"
+    # Lump together pairs of weights that sum to the parent mass
+    matches = {}
+    for i in xrange(len(weights)):
+        for j in xrange(i, len(weights)):
+            diff = weights[j] - weights[i]
+            closest = masses.get_amino_acid(diff)
+            if closest:
+                tup = (closest, weights[j])
+                if weights[i] in matches:
+                    matches[weights[i]].append(tup)
+                else:
+                    matches[weights[i]] = [tup]
+
+    # Build up the protein by adding the next smallest item
+    tot = min(matches)
+    protein = ''
+    n = (len(weights) - 2) / 2      # 2n + 2 masses in list
+    while len(protein) < n:
+        entry = matches[tot][0]     # TODO - backtrack to other items?
+        protein += entry[0]
+        tot = entry[1]
+
+    return protein
 
 
 def main(fname):
