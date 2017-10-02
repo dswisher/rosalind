@@ -28,12 +28,14 @@ PNAME=`echo $PDIR | tr '/' '.'`
 # Figure out the name of the module
 if [ $MODE == "test" ]; then
   MODULE="$PNAME.test_main"
+  ARGS=""
 else
   MODULE="$PNAME.main"
+  ARGS="$*"
 fi
 
 # Run it
 # echo "Executing python module: $MODULE"
 # NOTES: -B prevents creation of .pyc files
-python -m $MODULE $*
+python -m $MODULE $ARGS
 
