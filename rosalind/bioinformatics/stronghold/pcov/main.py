@@ -11,7 +11,7 @@ def assemble_circular_chromosome(seqs):
     str = ""
     for n in path:
         str += n.label[0]
-    return str
+    return str[:-1]
 
 
 def main(fname):
