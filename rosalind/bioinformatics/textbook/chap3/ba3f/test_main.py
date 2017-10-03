@@ -2,10 +2,12 @@
 import unittest
 from rosalind.common import util
 from rosalind.bioinformatics.common import debruijn
-from . import main
+from rosalind.bioinformatics.common import eulerian
 
 
 class TestGenerateKmers(unittest.TestCase):
+
+    # TODO - move this test to bioinformatics.common
 
     def test_sample1(self):
         self.run_test("sample1.txt", "expected1.txt")
@@ -15,8 +17,8 @@ class TestGenerateKmers(unittest.TestCase):
             graph = debruijn.read_adjacency_list(fp)
         with open(util.find_file(expected_name, __file__), "r") as fp:
             expected = fp.readline().strip()
-        cycle = main.find_eulerian_cycle(graph)
-        actual = main.format_path(cycle)
+        cycle = eulerian.find_cycle(graph)
+        actual = eulerian.format_path(cycle)
         duped = actual + actual[actual.find("-"):]
         self.assertEqual(len(actual), len(expected))
         self.assertTrue(duped.find(expected) != -1)

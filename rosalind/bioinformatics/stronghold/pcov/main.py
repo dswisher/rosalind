@@ -1,17 +1,22 @@
 
 import sys
 from rosalind.bioinformatics.common import seqio
+from rosalind.bioinformatics.common import debruijn
+from rosalind.bioinformatics.common import eulerian
 
 
 def assemble_circular_chromosome(seqs):
-    # TODO
-    return "GATTACA"
+    graph = debruijn.create_graph(seqs)
+    path = eulerian.find_cycle(graph)
+    str = ""
+    for n in path:
+        str += n.label[0]
+    return str
 
 
 def main(fname):
     seqs = seqio.read_list(fname, __file__)
     chromosome = assemble_circular_chromosome(seqs)
-    print seqs
     print chromosome
 
 
