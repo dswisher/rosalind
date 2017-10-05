@@ -18,6 +18,8 @@ trans = {
             "UGG": "W",    "CGG": "R",  "AGG": "R",  "GGG": "G"
         }
 
+reverse_trans = {}
+
 
 def translate(seq):
     prot = ""
@@ -34,3 +36,13 @@ def translate(seq):
                 prot += "X"
             codon = ""
     return prot
+
+
+def reverse_translate(aa):
+    if len(reverse_trans) == 0:
+        for k, v in trans.iteritems():
+            if v in reverse_trans:
+                reverse_trans[v].append(k)
+            else:
+                reverse_trans[v] = [k]
+    return reverse_trans[aa]
