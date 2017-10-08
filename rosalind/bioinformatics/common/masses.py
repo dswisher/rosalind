@@ -12,6 +12,13 @@ def get_mass(aa):
     return _weights[aa]
 
 
+def get_protein_mass(protein):
+    mass = 0
+    for aa in protein:
+        mass += get_mass(aa)
+    return mass
+
+
 def get_amino_acid(weight, toler=0.001):
     diff = 1e6
     best = None
