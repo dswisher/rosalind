@@ -5,7 +5,8 @@ from rosalind.bioinformatics.common import seqio
 
 def generate_spectrum(protein):
     # TODO
-    return [0, 113, 114, 128, 129, 227, 242, 242, 257, 355, 356, 370, 371, 484]
+    # return [0, 113, 114, 128, 129, 227, 242, 242, 257, 355, 356, 370, 371, 484]
+    return []
 
 
 def main(fname):

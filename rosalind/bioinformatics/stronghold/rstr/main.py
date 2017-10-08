@@ -5,7 +5,8 @@ from rosalind.common import util
 
 def compute_probability(N, x, dna):
     # TODO
-    return 0.689
+    # return 0.689
+    return 0
 
 
 def main(fname):
