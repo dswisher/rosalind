@@ -12,7 +12,7 @@ def nCr(n, r):
 def count_subsets(n, m):
     num = 0
     for k in xrange(m, n + 1):
-        num += nCr(n, k) % 1000000
+        num = (num + nCr(n, k)) % 1000000
     return num
 
 
