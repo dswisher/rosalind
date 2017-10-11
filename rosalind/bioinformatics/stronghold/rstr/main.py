@@ -3,7 +3,24 @@ import sys
 from rosalind.common import util
 
 
+def compute_seq_likelihood(seq, gc):
+    aaProbs = {
+            'G': gc / 2.0,
+            'C': gc / 2.0,
+            'A': (1 - gc) / 2.0,
+            'T': (1 - gc) / 2.0
+            }
+
+    cProb = 1
+    for c in seq:
+        cProb *= aaProbs[c]
+    return cProb
+
+
 def compute_probability(N, x, dna):
+    sProb = compute_seq_likelihood(dna, x)
+    print "sProb:", sProb
+    print "Maybe:", sProb * N
     # TODO
     # return 0.689
     return 0
@@ -17,7 +34,10 @@ def main(fname):
 
         dna = fp.readline().strip()
 
+    prob = compute_probability(N, x, dna)
+
     print N, x, dna
+    print prob
 
 
 if __name__ == '__main__':
