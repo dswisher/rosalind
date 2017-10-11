@@ -11,7 +11,7 @@ class TestRandomMotifs(unittest.TestCase):
         dna = "ATAGCCGA"
         actual = main.compute_probability(N, x, dna)
         expected = 0.689
-        self.assertAlmostEqual(actual, expected)
+        self.assertAlmostEqual(actual, expected, places=3)
 
 
 if __name__ == '__main__':
