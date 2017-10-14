@@ -9,8 +9,8 @@ class TestLongestCommonSubstring(unittest.TestCase):
         s1 = "AACCTTGG"
         s2 = "ACACTGTGA"
         actual = main.find_longest_common_subsequence(s1, s2)
-        expected = "AACTGG"
-        self.assertEqual(actual, expected)
+        expected = ["AACTGG", "AACTTG"]
+        self.assertIn(actual, expected)
 
 
 if __name__ == '__main__':
