@@ -4,12 +4,25 @@ from rosalind.common import util
 from rosalind.bioinformatics.common import fasta
 
 
-def print_matrix(d, m, n):
+def print_matrix(d, s, t):
+    m = len(s) - 1
+    n = len(t) - 1
+    dx = len(str(d[0][0]))
+
+    print "----"
+    # Print the string header
+    a = "   "
+    for x in range(m+1):
+        a += " " + s[x].center(dx)
+        # a += center(s[x], dx)
+    print a
+
+    # Print the rest
     for y in range(n+1):
-        s = ""
+        a = t[y] + ": "
         for x in range(m+1):
-            s += " " + str(d[x][y])
-        print s
+            a += " " + str(d[x][y])
+        print a
 
 
 def edit_distance(s, t):
@@ -33,11 +46,21 @@ def edit_distance(s, t):
     # (need to do i deletions)
     for i in xrange(m+1):
         d[i][0] = i
+        bt[i][0] = "del"
 
     # The distance of any second string to an empty first string
+    # (need to do j insertions)
     for j in xrange(n+1):
         d[0][j] = j
+        bt[0][j] = "ins"
 
+    # Properly set the first cell in bt (I think?)
+    if s[0] == t[0]:
+        bt[0][0] = "eql"
+    else:
+        bt[0][0] = "sub"
+
+    # Build out the rest of the matrix
     for j in xrange(1, n+1):
         for i in xrange(1, m+1):
             if s[i] == t[j]:
@@ -52,15 +75,47 @@ def edit_distance(s, t):
                 d[i][j] = min(dist)
                 bt[i][j] = ops[dist.index(d[i][j])]
 
-    print_matrix(d, m, n)
-    print_matrix(bt, m, n)
+    print "m =", m, " n =", n
+    print_matrix(d, s, t)
+    print_matrix(bt, s, t)
+    print "----"
 
     return (d[m][n], bt)
 
 
 def align(bt, s, t):
+    # The aligned output strings
+    os = ""
+    ot = ""
+
+    # Indices into the backtrack matrix
+    i = len(bt) - 1
+    j = len(bt[0]) - 1
+
+    # Backtrack through the backtrack matrix
+    while (i >= 0) and (j >= 0):
+        print "i =", i, " j =", j, " bt =", bt[i][j]
+        action = bt[i][j]
+        if action == "del":
+            os = s[i] + os
+            ot = "-" + ot
+            i = i - 1
+        elif action == "ins":
+            os += "-" + os
+            ot = t[j] + ot
+            j = j - 1
+        else:
+            os = s[i] + os
+            ot = t[j] + ot
+            j = j - 1
+            i = i - 1
+
+        # deld = d[i-1][j] + 1    # deletion cost
+        # insd = d[i][j-1] + 1    # insert cost
+        # subd = d[i-1][j-1] + 1  # substitution cost
+
     # TODO
-    return ("=" + s + "=", "+" + t + "+")
+    return (os, ot)
 
 
 def edit_distance_alignment(s, t):
@@ -71,6 +126,8 @@ def edit_distance_alignment(s, t):
 
 def main(fname):
     seqs, _ = fasta.read(util.find_file(fname))
+    print "s:", seqs[0]
+    print "t:", seqs[1]
     align, os, ot = edit_distance_alignment(seqs[0], seqs[1])
     print align
     print os
@@ -78,7 +135,12 @@ def main(fname):
 
 
 if __name__ == '__main__':
-    if len(sys.argv) != 2:
+    if len(sys.argv) < 2:
         print ("You must specify the name of the data file to load!")
         sys.exit(1)
-    main(sys.argv[1])
+    if len(sys.argv) == 2:
+        main(sys.argv[1])
+    if len(sys.argv) == 3:
+        _, os, ot = edit_distance_alignment(sys.argv[1], sys.argv[2])
+        print os
+        print ot
