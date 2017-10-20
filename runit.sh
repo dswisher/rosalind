@@ -32,7 +32,7 @@ if [ $MODE == "test" ]; then
 else
   MODULE="$PNAME.main"
   ARGS="$*"
-  if [ -z $ARGS ]; then
+  if [ -z "$ARGS" ]; then
     ARGS="sample1.txt"
   fi
 fi
