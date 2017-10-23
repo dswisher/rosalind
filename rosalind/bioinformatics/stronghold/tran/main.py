@@ -1,21 +1,7 @@
 
 import sys
-
-if len(sys.argv) != 2:
-    print "Please enter the name of the file to read!"
-    sys.exit(1)
-
-
-def read_fasta(fname):
-    seqs = []
-    with open(fname, "r") as ins:
-        for line in ins:
-            line = line.strip()
-            if line[0] == '>':
-                seqs.append('')
-            else:
-                seqs[len(seqs) - 1] += line
-    return seqs
+from rosalind.common import util
+from rosalind.bioinformatics.common import fasta
 
 
 def compute_ratio(seq1, seq2):
@@ -33,12 +19,15 @@ def compute_ratio(seq1, seq2):
 
 
 def main(fname):
-    seqs = read_fasta(fname)
+    seqs, _ = fasta.read(util.find_file(fname))
     if len(seqs[0]) != len(seqs[1]):
         print "Sequences have different lengths!"
         sys.exit(1)
     print compute_ratio(seqs[0], seqs[1])
 
 
-main(sys.argv[1])
-
+if __name__ == '__main__':
+    if len(sys.argv) != 2:
+        print ("You must specify the name of the data file to load!")
+        sys.exit(1)
+    main(sys.argv[1])
