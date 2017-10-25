@@ -6,29 +6,55 @@ from rosalind.bioinformatics.common import kmers
 
 
 def build_counts(seqs):
-    comps = dict()
+    counts = dict()
     for s in seqs:
-        if s in comps:
-            comps[s] += 1
+        if s in counts:
+            counts[s] += 1
         else:
-            comps[s] = 1
+            counts[s] = 1
+    for s in seqs:
         comp = kmers.reverse_complement(s)
-        if comp in comps:
-            comps[comp] += 1
-        else:
-            comps[comp] = 2
-    return comps
+        if comp in counts:
+            counts[s] += 1
+    return counts
 
 
 def find_corrections(seqs):
     corrs = []
-    comps = build_counts(seqs)
-    # print comps
-    for s1, num in comps.iteritems():
+    counts = build_counts(seqs)
+    print counts
+    for s1 in seqs:
+        num = counts[s1]
         if num == 1:
-            for s2 in comps:
+            found = False
+            for s2 in seqs:
                 if kmers.hamming_distance(s1, s2) == 1:
                     corrs.append(s1 + "->" + s2)
+                    found = True
+                    break
+
+            if not found:
+                c1 = kmers.reverse_complement(s1)
+                for s2 in seqs:
+                    if kmers.hamming_distance(c1, s2) == 1:
+                        corrs.append(s1 + "->" + s2)
+                        break
+    return corrs
+
+    for s1, num in counts.iteritems():
+        if num == 1:
+            found = False
+            for s2 in seqs:
+                if kmers.hamming_distance(s1, s2) == 1:
+                    corrs.append(s1 + "->" + s2)
+                    found = True
+                    break
+            if not found:
+                c1 = kmers.reverse_complement(s1)
+                for s2 in seqs:
+                    if kmers.hamming_distance(c1, s2) == 1:
+                        corrs.append(s1 + "->" + s2)
+                        break
     return corrs
 
 

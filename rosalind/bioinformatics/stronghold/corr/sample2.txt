@@ -1,0 +1,12 @@
+>Foo1
+AAAAA
+>Foo2
+CCCCC
+>Foo3
+GGGGG
+>Foo4
+TTCTT
+>Foo5
+ACACA
+>Foo6
+TGAGT
