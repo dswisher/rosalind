@@ -5,57 +5,35 @@ from rosalind.bioinformatics.common import fasta
 from rosalind.bioinformatics.common import kmers
 
 
-def build_counts(seqs):
-    counts = dict()
+def build_sets(seqs):
+    good = set()
+    bad = set()
     for s in seqs:
-        if s in counts:
-            counts[s] += 1
+        if seqs.count(s) > 1:
+            good.add(s)
+        elif kmers.reverse_complement(s) in seqs:
+            good.add(s)
         else:
-            counts[s] = 1
-    for s in seqs:
-        comp = kmers.reverse_complement(s)
-        if comp in counts:
-            counts[s] += 1
-    return counts
+            bad.add(s)
+    return (good, bad)
 
 
 def find_corrections(seqs):
-    corrs = []
-    counts = build_counts(seqs)
-    print counts
-    for s1 in seqs:
-        num = counts[s1]
-        if num == 1:
-            found = False
-            for s2 in seqs:
-                if kmers.hamming_distance(s1, s2) == 1:
-                    corrs.append(s1 + "->" + s2)
-                    found = True
+    corr = []
+    good_reads, bad_reads = build_sets(seqs)
+    for s1 in bad_reads:
+        for s2 in good_reads:
+            if kmers.hamming_distance(s1, s2) == 1:
+                corr.append(s1 + "->" + s2)
+                break
+            else:
+                c2 = kmers.reverse_complement(s2)
+                if kmers.hamming_distance(s1, c2) == 1:
+                    corr.append(s1 + "->" + c2)
                     break
-
-            if not found:
-                c1 = kmers.reverse_complement(s1)
-                for s2 in seqs:
-                    if kmers.hamming_distance(c1, s2) == 1:
-                        corrs.append(s1 + "->" + s2)
-                        break
-    return corrs
-
-    for s1, num in counts.iteritems():
-        if num == 1:
-            found = False
-            for s2 in seqs:
-                if kmers.hamming_distance(s1, s2) == 1:
-                    corrs.append(s1 + "->" + s2)
-                    found = True
-                    break
-            if not found:
-                c1 = kmers.reverse_complement(s1)
-                for s2 in seqs:
-                    if kmers.hamming_distance(c1, s2) == 1:
-                        corrs.append(s1 + "->" + s2)
-                        break
-    return corrs
+    # print good_reads
+    # print bad_reads
+    return corr
 
 
 def main(fname):
