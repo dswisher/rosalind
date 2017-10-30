@@ -84,3 +84,26 @@ def read_adjacency_list(fp):
             label = head.label + " -> " + tail.label
             Edge(label, head, tail)
     return nodes
+
+
+def read_edge_list(fp):
+    nodes = {}
+
+    # n nodes, m edges
+    n, m = map(int, fp.readline().split())
+
+    # Rest of the lines are edges
+    for line in fp.readlines():
+        a, b = line.split()
+        print a + " -> " + b
+        head = _find_or_add_node(nodes, a)
+        tail = _find_or_add_node(nodes, b)
+        label = head.label + " -> " + tail.label
+        Edge(label, head, tail)
+
+    num = len(nodes)
+    while num < n:
+        _find_or_add_node(nodes, str(num + 1))
+        num += 1
+
+    return nodes
