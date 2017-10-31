@@ -12,6 +12,9 @@ class Node:
     def add_in(self, e):
         self.in_edges.append(e)
 
+    def degree(self):
+        return len(self.out_edges) + len(self.in_edges)
+
     def __repr__(self):
         return self.label
 
@@ -95,7 +98,6 @@ def read_edge_list(fp):
     # Rest of the lines are edges
     for line in fp.readlines():
         a, b = line.split()
-        print a + " -> " + b
         head = _find_or_add_node(nodes, a)
         tail = _find_or_add_node(nodes, b)
         label = head.label + " -> " + tail.label
