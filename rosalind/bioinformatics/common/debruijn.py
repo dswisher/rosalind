@@ -95,17 +95,16 @@ def read_edge_list(fp):
     # n nodes, m edges
     n, m = map(int, fp.readline().split())
 
-    # Rest of the lines are edges
+    # create all the nodes
+    for i in xrange(n):
+        _find_or_add_node(nodes, str(i + 1))
+
+    # the rest of the lines are edges
     for line in fp.readlines():
         a, b = line.split()
         head = _find_or_add_node(nodes, a)
         tail = _find_or_add_node(nodes, b)
         label = head.label + " -> " + tail.label
         Edge(label, head, tail)
-
-    num = len(nodes)
-    while num < n:
-        _find_or_add_node(nodes, str(num + 1))
-        num += 1
 
     return nodes
