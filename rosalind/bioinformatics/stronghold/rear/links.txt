@@ -1,0 +1,8 @@
+
+See page 23 in:
+    https://www.cs.helsinki.fi/u/lmsalmel/algbio12/AfB_lecture3_13092012.pdf
+
+See page 43 in:
+    http://bix.ucsd.edu/bioalgorithms/presentations/Ch05_Rearrangements.pdf
+
+
