@@ -3,7 +3,19 @@ import sys
 from rosalind.common import util
 
 
+# Calculate b(p)
+def num_breakpoints(p):
+    last = p[0]
+    num = 0
+    for i in xrange(1, len(p)):
+        if abs(p[i] - last) != 1:
+            num += 1
+        last = p[i]
+    return num
+
+
 def reversal_distance(a, b):
+    print a, " -> ", num_breakpoints(a)
     # TODO
     return 0
 
