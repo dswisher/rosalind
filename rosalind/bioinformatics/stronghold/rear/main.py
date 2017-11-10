@@ -14,8 +14,15 @@ def num_breakpoints(p):
     return num
 
 
+# Find decreasing strips in p and return them as a tuple of (start-pos, end-pos)
+def find_strips(p):
+    strips = []
+    # TODO
+    return strips
+
+
 def reversal_distance(a, b):
-    print a, " -> ", num_breakpoints(a)
+    print "p=a, ", a, " -> bp(p)=", num_breakpoints(a), ", strips: ", find_strips(a)
     # TODO
     return 0
 
